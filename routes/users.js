@@ -1,15 +1,31 @@
 let express = require('express');
+let mongoose = require('mongoose');
 let router = express.Router();
+let User = mongoose.model('User');
 
 let users = [];
 
 router.get('/', function(req, res, next) {
-  res.json(users);
+  User.find({}, function(err, users) {
+    if(err) {
+      res.send(err);
+    } else {
+      res.json(users);
+    }
+  })
 });
 
 router.post('/', function(req, res, next) {
-  users.push(req.body);
-  res.send(users);
+  let newUser = new User({
+    username: req.body.username
+  })
+
+  newUser.save((err) => {
+    res.sendStatus(200);
+  }, ((err) => {
+    res.send(err);
+  }))
+
 });
 
 router.put('/', function(req, res, next) {

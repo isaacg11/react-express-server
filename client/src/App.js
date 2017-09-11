@@ -9,14 +9,24 @@ class App extends Component {
 
   componentDidMount() {
     axios.get('/users').then((res) => {
-      this.setState({users: res.data});
+      let results = res.data;
+
+      for(let item in results) {
+        counter += 1
+        results[item].id = counter;
+      }
+
+      this.setState({users: results});
     })
   }
 
   addFriend(friend) {
-    counter += 1;
-    axios.post('/users', {username: friend, id: counter}).then((res) => {
-      this.setState({users: res.data});
+    axios.post('/users', {username: friend}).then(() => {
+      counter += 1
+      let newUser = {username: friend, id: counter};
+      let userList = this.state.users;
+      userList.push(newUser);
+      this.setState({users: userList});
     })
   }
 

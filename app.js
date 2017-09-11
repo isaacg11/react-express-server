@@ -4,7 +4,8 @@ let favicon = require('serve-favicon');
 let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
-
+let mongoose = require('mongoose');
+require('./models/user');
 let index = require('./routes/index');
 let users = require('./routes/users');
 
@@ -21,6 +22,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+mongoose.connect('mongodb://isaac:123@ds129004.mlab.com:29004/codercamps-db');
 
 app.use('/', index);
 app.use('/users', users);
