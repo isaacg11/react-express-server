@@ -5,7 +5,10 @@ let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
+let passport = require('passport');
+
 require('./models/user');
+require('./config/passport');
 let index = require('./routes/index');
 let users = require('./routes/users');
 
@@ -22,6 +25,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(passport.initialize());
 
 mongoose.connect('mongodb://isaac:123@ds129004.mlab.com:29004/codercamps-db');
 
