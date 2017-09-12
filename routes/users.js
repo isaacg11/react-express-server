@@ -16,15 +16,18 @@ router.get('/', ((req, res, next) => {
 }));
 
 router.post('/', ((req, res, next) => {
-  let newUser = new User({
-    username: req.body.username
-  })
+  let newUser = new User();
+  newUser.email = req.body.email;
+  newUser.setPassword(req.body.password);
 
   newUser.save((err) => {
-    res.sendStatus(200);
-  }, ((err) => {
-    res.send(err);
-  }))
+    if(err) {
+      res.send(err);
+    } else {
+      res.sendStatus(200);
+    }
+  })
+  
 }));
 
 router.put('/', ((req, res, next) => {
